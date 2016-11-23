@@ -39,7 +39,7 @@ public class DataDbHelper extends SQLiteOpenHelper {
                 DataContract.AthleteEntry.COLUMN_id  + " TEXT NOT NULL, " +
                 DataContract.AthleteEntry.COLUMN_firstName  + " TEXT NOT NULL, " +
                 DataContract.AthleteEntry.COLUMN_lastName  + " TEXT NOT NULL, " +
-                DataContract.AthleteEntry.COLUMN_dateOfBirth  + " DATE NOT NULL, " +
+                DataContract.AthleteEntry.COLUMN_dateOfBirth + " TEXT NOT NULL, " +
                 DataContract.AthleteEntry.COLUMN_sex  + " TEXT NOT NULL, " +
                 DataContract.AthleteEntry.COLUMN_email  + " TEXT NOT NULL );";
 

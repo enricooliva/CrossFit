@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:descendantFocusability="blocksDescendants">
+
+    <ImageView
+        android:id="@+id/icon"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:src="@drawable/logo72"
+        android:focusable="false"
+        android:focusableInTouchMode="false"></ImageView>
+
+
+    <TextView
+        android:id="@+id/number"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerVertical="true"
+        android:layout_toRightOf="@id/icon"
+        android:text="8"
+        android:textSize="60dp" />
+
+
+    <LinearLayout
+        android:id="@+id/playerinfo"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/number"
+        android:orientation="vertical"
+        android:paddingLeft="10sp"
+        android:gravity="center_vertical">
+
+        <TextView
+            android:id="@+id/name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text="name"
+            android:textSize="20dp" />
+
+        <TextView
+            android:id="@+id/role"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="role"
+            android:textSize="15dp" />
+
+
+        <LinearLayout
+            android:id="@+id/linearHorizontal"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="2sp">
+
+            <RatingBar
+                android:id="@+id/ratingBar1"
+                style="?android:attr/ratingBarStyleSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:isIndicator="false"
+                android:maxHeight="20dip"
+                android:numStars="5"
+                android:rating="2.0"
+                android:stepSize="0.5" />
+
+
+            <TextView
+                android:id="@+id/rate"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="5sp"
+                android:text="rate"
+                android:textSize="12dp" />
+
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>

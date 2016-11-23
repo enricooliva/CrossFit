@@ -65,7 +65,7 @@ class SyncAdapter extends AbstractThreadedSyncAdapter {
     /**
      * URL to fetch content from during a sync.
      */
-    private static final String ATHLETE_URL = "http://www.enricooliva.com/getAllPlayers.php";
+    private static final String ATHLETE_URL = "http://95.85.62.67:9876/athletes";
 
     /**
      * Network connection timeout, in milliseconds.
@@ -214,7 +214,7 @@ class SyncAdapter extends AbstractThreadedSyncAdapter {
 
     }
 
-    public static ArrayList<Athlete> getPlayerList(String athletes)
+    public static ArrayList<Athlete> getAthleteList(String athletes)
     {
         ArrayList<Athlete> athleteList = new ArrayList<Athlete>();
         //parse json data
@@ -237,7 +237,7 @@ class SyncAdapter extends AbstractThreadedSyncAdapter {
 
         final ContentResolver contentResolver = getContext().getContentResolver();
 
-        List<Athlete> athleteList = getPlayerList(result);
+        List<Athlete> athleteList = getAthleteList(result);
 
         // Get and insert the new weather information into the database
         Vector<ContentValues> cVVector = new Vector<ContentValues>(athleteList.size());

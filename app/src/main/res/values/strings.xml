@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">CrossFit</string>
+    <string name="hello_world">CrossFit Double Up</string>
+    <string name="action_settings">Information</string>
+    <string name="menuitem_athlete">Athlete</string>
+    <string name="title_activity_athlete">Athlete</string>
+    <string name="home">Home</string>
 </resources>

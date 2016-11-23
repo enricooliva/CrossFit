@@ -18,9 +18,6 @@ public class DataProvider extends ContentProvider {
      private static final int ATHLETE = 100;
      private static final int ATHLETE_ID = 101;
 
-     private static final int GAME = 200;
-     private static final int GAME_ID = 201;
-
      private static UriMatcher buildUriMatcher() {
 
          final UriMatcher matcher = new UriMatcher(UriMatcher.NO_MATCH);
@@ -31,12 +28,8 @@ public class DataProvider extends ContentProvider {
          matcher.addURI(authority, DataContract.PATH_ATHLETE + "/#", ATHLETE_ID);
          //matcher.addURI(authority, DataContract.PATH_PLAYER + "/*/*", WEATHER_WITH_LOCATION_AND_DATE);
 
-         matcher.addURI(authority, DataContract.PATH_GAME, GAME);
-         matcher.addURI(authority, DataContract.PATH_GAME + "/#", GAME_ID);
-
          return matcher;
      }
-
 
 
     @Override
