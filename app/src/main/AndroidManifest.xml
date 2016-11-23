@@ -36,7 +36,7 @@
         </activity>
 
         <provider
-            android:authorities="com.enricooliva.crossfit.app"
+            android:authorities="@string/content_authority"
             android:name=".data.DataProvider"
             android:exported="false" />
 

@@ -37,7 +37,10 @@ public class SyncUtils {
     private static final String PREF_SETUP_COMPLETE = "setup_complete";
 
     // Value below must match the account type specified in res/xml/syncadapter.xml
-    public static final String ACCOUNT_TYPE = "com.enricooliva.crossfit.account";
+    // Content provider authority
+    public static final String AUTHORITY = "com.enricooliva.crossfit.datasync.provider";
+    // Account type
+    public static final String ACCOUNT_TYPE = "com.enricooliva.crossfit.datasync";
 
     /**
      * Create an entry for this application in the system account list, if it isn't already there.

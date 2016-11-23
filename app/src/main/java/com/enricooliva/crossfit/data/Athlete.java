@@ -6,14 +6,15 @@ import android.database.Cursor;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.sql.Date;
+import java.util.Date;
+
 
 public class Athlete {
 
     private String id;
     private String firstName;
     private String lastName;
-    private Date dateOfBirth;
+    private Long dateOfBirth;
     private String sex;
     private String email;
 
@@ -27,16 +28,17 @@ public class Athlete {
 
     }
 
+    //{"id":"5835a2a2c9e77c000130e2d6","firstName":"Mario1","lastName":"Rossi1","dateOfBirth":325425600,"sex":"M","email":"mario.rossi1@demo.com"}
 
     public Athlete(JSONObject json_data) {
 
         try {
-            id = json_data.getString("Id");
-            firstName = json_data.getString("FirstName");
-            lastName = json_data.getString("LastName");
-            dateOfBirth=  Date.valueOf(json_data.getString("DateOfBirth"));
-            sex = json_data.getString("Sex");
-            email = json_data.getString("Email");
+            id = json_data.getString("id");
+            firstName = json_data.getString("firstName");
+            lastName = json_data.getString("lastName");
+            dateOfBirth = json_data.getLong("dateOfBirth");
+            sex = json_data.getString("sex");
+            email = json_data.getString("email");
 
         } catch (JSONException e) {
             // TODO Auto-generated catch block
@@ -67,11 +69,11 @@ public class Athlete {
             this.lastName = lastName;
         }
 
-        public Date getDateOfBirth() {
+    public Long getDateOfBirth() {
             return dateOfBirth;
         }
 
-        public void setDateOfBirth(Date dateOfBirth) {
+    public void setDateOfBirth(Long dateOfBirth) {
             this.dateOfBirth = dateOfBirth;
         }
 

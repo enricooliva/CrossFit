@@ -1,8 +1,10 @@
 <resources>
     <string name="app_name">CrossFit</string>
-    <string name="hello_world">CrossFit Double Up</string>
-    <string name="action_settings">Information</string>
-    <string name="menuitem_athlete">Athlete</string>
-    <string name="title_activity_athlete">Athlete</string>
-    <string name="home">Home</string>
+    <string name="hello_world">CrossFit DoubleUp</string>
+    <string name="action_settings">Informazioni</string>
+    <string name="menuitem_athlete">Atleti</string>
+    <string name="title_activity_athlete">Atleti</string>
+    <string name="home">CrossFit</string>
+    <string name="content_authority">com.enricooliva.crossfit.app</string>
+    <string name="sync_account_type">com.enricooliva.crossfit.datasync</string>
 </resources>
