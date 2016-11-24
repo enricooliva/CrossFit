@@ -25,7 +25,7 @@ public class DataDbHelper extends SQLiteOpenHelper {
     // If you change the database schema, you must increment the database version.
     private static final int DATABASE_VERSION = 1;
 
-    public static final String DATABASE_NAME = "footbal.db";
+    public static final String DATABASE_NAME = "crossfit.db";
 
     public DataDbHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -36,12 +36,12 @@ public class DataDbHelper extends SQLiteOpenHelper {
 
         final String SQL_CREATE_PLAYER_TABLE = "CREATE TABLE " + DataContract.AthleteEntry.TABLE_NAME + " (" +
                 DataContract.AthleteEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
-                DataContract.AthleteEntry.COLUMN_id  + " TEXT NOT NULL, " +
-                DataContract.AthleteEntry.COLUMN_firstName  + " TEXT NOT NULL, " +
-                DataContract.AthleteEntry.COLUMN_lastName  + " TEXT NOT NULL, " +
-                DataContract.AthleteEntry.COLUMN_dateOfBirth + " TEXT NOT NULL, " +
-                DataContract.AthleteEntry.COLUMN_sex  + " TEXT NOT NULL, " +
-                DataContract.AthleteEntry.COLUMN_email  + " TEXT NOT NULL );";
+                DataContract.AthleteEntry.COLUMN_id + " TEXT, " +
+                DataContract.AthleteEntry.COLUMN_firstName + " TEXT, " +
+                DataContract.AthleteEntry.COLUMN_lastName + " TEXT, " +
+                DataContract.AthleteEntry.COLUMN_dateOfBirth + " TEXT, " +
+                DataContract.AthleteEntry.COLUMN_sex + " TEXT, " +
+                DataContract.AthleteEntry.COLUMN_email + " TEXT );";
 
 
         sqLiteDatabase.execSQL(SQL_CREATE_PLAYER_TABLE);

@@ -48,7 +48,7 @@ public class SyncUtils {
      * @param context Context
      */
     @TargetApi(Build.VERSION_CODES.FROYO)
-    public static void CreateSyncAccount(Context context) {
+    public static Account CreateSyncAccount(Context context) {
         boolean newAccount = false;
         boolean setupComplete = PreferenceManager
                 .getDefaultSharedPreferences(context).getBoolean(PREF_SETUP_COMPLETE, false);
@@ -81,6 +81,8 @@ public class SyncUtils {
             PreferenceManager.getDefaultSharedPreferences(context).edit()
                     .putBoolean(PREF_SETUP_COMPLETE, true).commit();
         }
+
+        return account;
     }
 
     /**

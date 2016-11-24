@@ -10,6 +10,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.RatingBar;
 
+import com.enricooliva.crossfit.sync.SyncAdapter;
 import com.enricooliva.crossfit.sync.SyncUtils;
 
 public class MainActivity extends AppCompatActivity {
@@ -34,31 +35,10 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        /*new Handler().postDelayed(new Runnable() {
+        SyncAdapter.initializeSyncAdapter(this);
 
-            *//*
-             * Showing splash screen with a timer. This will be useful when you
-             * want to show case your app logo / company
-             *//*
-
-            @Override
-            public void run() {
-                // This method will be executed once the timer is over
-                // Start your app main activity
-                Intent i = new Intent(MainActivity.this, AthleteActivity.class);
-                startActivity(i);
-
-                // close this activity
-                finish();
-            }
-        }, SPLASH_TIME_OUT);*/
-
-        // Create account, if needed
         //mAccount = CreateSyncAccount(this);
-        //mAccount = CreateSyncAccount(this);
-        SyncUtils.TriggerRefresh();
-        //refresh();
-
+        //SyncUtils.TriggerRefresh();
     }
 
 

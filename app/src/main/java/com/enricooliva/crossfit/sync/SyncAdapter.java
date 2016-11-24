@@ -62,7 +62,7 @@ import java.util.Vector;
  * <p>The system calls onPerformSync() via an RPC call through the IBinder object supplied by
  * SyncService.
  */
-class SyncAdapter extends AbstractThreadedSyncAdapter {
+public class SyncAdapter extends AbstractThreadedSyncAdapter {
     public static final String LOG_TAG = "SyncAdapter";
 
     /**
@@ -127,7 +127,7 @@ class SyncAdapter extends AbstractThreadedSyncAdapter {
 
             Log.i(LOG_TAG, "Streaming data from network: ");
             String result = MadeGetQuery(ATHLETE_URL);
-            updateLocalPlayerData(result);
+            updateLocalAthleteData(result);
             // Makes sure that the InputStream is closed after the app is
             // finished using it.
 
@@ -236,7 +236,7 @@ class SyncAdapter extends AbstractThreadedSyncAdapter {
         return athleteList;
     }
 
-    public void updateLocalPlayerData(final String result)
+    public void updateLocalAthleteData(final String result)
             throws IOException, XmlPullParserException, RemoteException,
             OperationApplicationException, ParseException {
 
@@ -253,7 +253,7 @@ class SyncAdapter extends AbstractThreadedSyncAdapter {
             athleteValues.put(DataContract.AthleteEntry.COLUMN_id, p.getId());
             athleteValues.put(DataContract.AthleteEntry.COLUMN_firstName, p.getFirstName());
             athleteValues.put(DataContract.AthleteEntry.COLUMN_lastName, p.getLastName());
-            athleteValues.put(DataContract.AthleteEntry.COLUMN_dateOfBirth, String.valueOf(p.getDateOfBirth()));
+            athleteValues.put(DataContract.AthleteEntry.COLUMN_dateOfBirth, p.getDateOfBirth());
             athleteValues.put(DataContract.AthleteEntry.COLUMN_sex, p.getSex());
             athleteValues.put(DataContract.AthleteEntry.COLUMN_email, p.getEmail());
             cVVector.add(athleteValues);
@@ -315,6 +315,9 @@ class SyncAdapter extends AbstractThreadedSyncAdapter {
         syncImmediately(context);
     }
 
+    public static void initializeSyncAdapter(Context context) {
+        getSyncAccount(context);
+    }
     /**
      * Helper method to have the sync adapter sync immediately
      *

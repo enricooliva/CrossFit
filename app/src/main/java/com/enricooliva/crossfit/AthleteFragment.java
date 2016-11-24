@@ -2,6 +2,7 @@ package com.enricooliva.crossfit;
 
 import android.database.Cursor;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
@@ -35,6 +36,7 @@ public class AthleteFragment extends Fragment implements LoaderManager.LoaderCal
             DataContract.AthleteEntry.COLUMN_id,
             DataContract.AthleteEntry.COLUMN_firstName,
             DataContract.AthleteEntry.COLUMN_lastName,
+            DataContract.AthleteEntry.COLUMN_dateOfBirth,
             DataContract.AthleteEntry.COLUMN_sex,
             DataContract.AthleteEntry.COLUMN_email
     };
@@ -82,10 +84,10 @@ public class AthleteFragment extends Fragment implements LoaderManager.LoaderCal
         return rootView;
     }
 
-    private void updateAthlete() {
-
-        new FetchAthleteTask(getActivity()).execute("");
-    }
+//    private void updateAthlete() {
+//
+//        new FetchAthleteTask(getActivity()).execute("");
+//    }
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -96,7 +98,7 @@ public class AthleteFragment extends Fragment implements LoaderManager.LoaderCal
     @Override
     public void onStart() {
         super.onStart();
-        updateAthlete();
+        //updateAthlete();
     }
 
     @Override

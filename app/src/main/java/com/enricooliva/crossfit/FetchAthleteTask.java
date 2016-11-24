@@ -84,6 +84,7 @@ public class FetchAthleteTask extends AsyncTask<String, Void, Void> {
         try {
             JSONArray jArray = new JSONArray(athletes);
             for (int i = 0; i < jArray.length(); i++) {
+                //new Gson().fromJson(jArray.getJSONObject(i), Athlete.class);
                 athleteList.add(new Athlete(jArray.getJSONObject(i)));
             }
         } catch (JSONException e) {
@@ -108,7 +109,7 @@ public class FetchAthleteTask extends AsyncTask<String, Void, Void> {
             athleteValues.put(DataContract.AthleteEntry.COLUMN_id, p.getId());
             athleteValues.put(DataContract.AthleteEntry.COLUMN_firstName, p.getFirstName());
             athleteValues.put(DataContract.AthleteEntry.COLUMN_lastName, p.getLastName());
-            athleteValues.put(DataContract.AthleteEntry.COLUMN_dateOfBirth, String.valueOf(p.getDateOfBirth()));
+            athleteValues.put(DataContract.AthleteEntry.COLUMN_dateOfBirth, p.getDateOfBirth());
             athleteValues.put(DataContract.AthleteEntry.COLUMN_sex, p.getSex());
             athleteValues.put(DataContract.AthleteEntry.COLUMN_email, p.getEmail());
             cVVector.add(athleteValues);

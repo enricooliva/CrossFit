@@ -14,7 +14,7 @@ public class Athlete {
     private String id;
     private String firstName;
     private String lastName;
-    private Long dateOfBirth;
+    private String dateOfBirth;
     private String sex;
     private String email;
 
@@ -23,7 +23,7 @@ public class Athlete {
         id = cursor.getString(cursor.getColumnIndex(DataContract.AthleteEntry.COLUMN_id));
         firstName = cursor.getString(cursor.getColumnIndex(DataContract.AthleteEntry.COLUMN_firstName));
         lastName = cursor.getString(cursor.getColumnIndex(DataContract.AthleteEntry.COLUMN_lastName));
-        //dateOfBirth = cursor.getDate(cursor.getColumnIndex(DataContract.AthleteEntry.COLUMN_dateOfBirth));
+        dateOfBirth = cursor.getString(cursor.getColumnIndex(DataContract.AthleteEntry.COLUMN_dateOfBirth));
         sex = cursor.getString(cursor.getColumnIndex(DataContract.AthleteEntry.COLUMN_sex));
 
     }
@@ -33,12 +33,13 @@ public class Athlete {
     public Athlete(JSONObject json_data) {
 
         try {
-            id = json_data.getString("id");
-            firstName = json_data.getString("firstName");
-            lastName = json_data.getString("lastName");
-            dateOfBirth = json_data.getLong("dateOfBirth");
-            sex = json_data.getString("sex");
-            email = json_data.getString("email");
+
+            id = json_data.isNull("id") ? null : json_data.getString("id");
+            firstName = json_data.isNull("firstName") ? null : json_data.getString("firstName");
+            lastName = json_data.isNull("lastName") ? null : json_data.getString("lastName");
+            dateOfBirth = json_data.isNull("dateOfBirth") ? null : json_data.getString("dateOfBirth");
+            sex = json_data.isNull("sex") ? null : json_data.getString("sex");
+            email = json_data.isNull("email") ? null : json_data.getString("email");
 
         } catch (JSONException e) {
             // TODO Auto-generated catch block
@@ -69,11 +70,11 @@ public class Athlete {
             this.lastName = lastName;
         }
 
-    public Long getDateOfBirth() {
+    public String getDateOfBirth() {
             return dateOfBirth;
         }
 
-    public void setDateOfBirth(Long dateOfBirth) {
+    public void setDateOfBirth(String dateOfBirth) {
             this.dateOfBirth = dateOfBirth;
         }
 
