@@ -1,17 +1,13 @@
 package com.enricooliva.crossfit;
 
 import android.accounts.Account;
-import android.app.AlertDialog;
 import android.content.Intent;
-import android.os.Handler;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.RatingBar;
 
 import com.enricooliva.crossfit.sync.SyncAdapter;
-import com.enricooliva.crossfit.sync.SyncUtils;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -37,6 +33,11 @@ public class MainActivity extends AppCompatActivity {
 
         SyncAdapter.initializeSyncAdapter(this);
 
+        if (savedInstanceState == null) {
+            getSupportFragmentManager().beginTransaction()
+                    .add(R.id.LessonFragmentPlaceholder, new LessonFragment())
+                    .commit();
+        }
         //mAccount = CreateSyncAccount(this);
         //SyncUtils.TriggerRefresh();
     }

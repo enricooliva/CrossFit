@@ -23,7 +23,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class DataDbHelper extends SQLiteOpenHelper {
 
     // If you change the database schema, you must increment the database version.
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 3;
 
     public static final String DATABASE_NAME = "crossfit.db";
 
@@ -43,9 +43,18 @@ public class DataDbHelper extends SQLiteOpenHelper {
                 DataContract.AthleteEntry.COLUMN_sex + " TEXT, " +
                 DataContract.AthleteEntry.COLUMN_email + " TEXT );";
 
-
         sqLiteDatabase.execSQL(SQL_CREATE_PLAYER_TABLE);
 
+        final String SQL_CREATE_LESSON_TABLE = "CREATE TABLE " + DataContract.LessonEntry.TABLE_NAME + " (" +
+                DataContract.LessonEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
+                DataContract.LessonEntry.ID + " TEXT, " +
+                DataContract.LessonEntry.BOXID + " TEXT, " +
+                DataContract.LessonEntry.DATE + " TEXT, " +
+                DataContract.LessonEntry.DURATION + " TEXT, " +
+                DataContract.LessonEntry.TYPE + " TEXT, " +
+                DataContract.LessonEntry.MAXATTENDANCE + " TEXT );";
+        
+        sqLiteDatabase.execSQL(SQL_CREATE_LESSON_TABLE);
 
     }
 
@@ -53,6 +62,8 @@ public class DataDbHelper extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int oldVersion, int newVersion) {
 
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + DataContract.AthleteEntry.TABLE_NAME);
+        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + DataContract.LessonEntry.TABLE_NAME);
+
 
         onCreate(sqLiteDatabase);
 

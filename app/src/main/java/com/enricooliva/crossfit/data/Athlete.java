@@ -70,11 +70,11 @@ public class Athlete {
             this.lastName = lastName;
         }
 
-    public String getDateOfBirth() {
+        public String getDateOfBirth() {
             return dateOfBirth;
         }
 
-    public void setDateOfBirth(String dateOfBirth) {
+        public void setDateOfBirth(String dateOfBirth) {
             this.dateOfBirth = dateOfBirth;
         }
 

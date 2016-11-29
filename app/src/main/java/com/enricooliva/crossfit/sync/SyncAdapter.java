@@ -35,15 +35,19 @@ import android.util.Log;
 import com.enricooliva.crossfit.R;
 import com.enricooliva.crossfit.data.Athlete;
 import com.enricooliva.crossfit.data.DataContract;
+import com.enricooliva.crossfit.data.Lesson;
 
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 import org.xmlpull.v1.XmlPullParserException;
 
+import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
@@ -69,6 +73,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
      * URL to fetch content from during a sync.
      */
     private static final String ATHLETE_URL = "http://95.85.62.67:9876/athletes";
+    private static final String LESSON_URL = "http://95.85.62.67:9876/classes";
 
     public static final int SYNC_INTERVAL = 60 * 180;
     public static final int SYNC_FLEXTIME = SYNC_INTERVAL / 3;
@@ -128,6 +133,8 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
             Log.i(LOG_TAG, "Streaming data from network: ");
             String result = MadeGetQuery(ATHLETE_URL);
             updateLocalAthleteData(result);
+            result = MadePostQuery(LESSON_URL);
+            updateLocalLessonData(result);
             // Makes sure that the InputStream is closed after the app is
             // finished using it.
 
@@ -163,34 +170,77 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
     {
         //convert response to string
         String result = "";
-        try{
-            BufferedReader reader = new BufferedReader(new InputStreamReader(is,"iso-8859-1"),8);
-            StringBuilder sb = new StringBuilder();
-            String line = null;
-            while ((line = reader.readLine()) != null) {
-                sb.append(line + "\n");
-            }
-            is.close();
+        if (is!=null) {
 
-            result=sb.toString();
-        } catch (UnsupportedEncodingException e) {
-            Log.e("log_tag", "Error converting result " + e.toString());
-            e.printStackTrace();
-        } catch (IOException e) {
-            Log.e("log_tag", "Error converting result " + e.toString());
-            e.printStackTrace();
-        } finally {
-            if (is!=null)
-                try {
-                    is.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
+            try {
+                BufferedReader reader = new BufferedReader(new InputStreamReader(is, "iso-8859-1"), 8);
+                StringBuilder sb = new StringBuilder();
+                String line = null;
+                while ((line = reader.readLine()) != null) {
+                    sb.append(line + "\n");
                 }
+                is.close();
+                result = sb.toString();
+                reader.close();
+            } catch (UnsupportedEncodingException e) {
+                Log.e("log_tag", "Error converting result " + e.toString());
+                e.printStackTrace();
+            } catch (IOException e) {
+                Log.e("log_tag", "Error converting result " + e.toString());
+                e.printStackTrace();
+            } finally {
+                if (is != null)
+                    try {
+                        is.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+            }
+
         }
-
-
         return result;
     }
+
+    public String MadePostQuery(String builtUri)
+    {
+        HttpURLConnection urlConnection = null;
+        InputStream inputStream=null;
+
+        //http post
+        try{
+            URL url = new URL(builtUri.toString());
+
+
+            // Create the request to OpenWeatherMap, and open the connection
+            urlConnection = (HttpURLConnection) url.openConnection();
+            urlConnection.setRequestMethod("POST");
+            urlConnection.setRequestProperty("Content-Type", "application/json");//some header you want to add
+            //urlConnection.setRequestProperty("Authorization", "key=" + AppConfig.API_KEY);//some header you want to add
+            urlConnection.setDoOutput(true);
+
+            JSONObject jsonParam = new JSONObject();
+            jsonParam.put("boxId", "58340522c9e77c000130e2d4");
+
+            OutputStream outputPost = new BufferedOutputStream(urlConnection.getOutputStream());
+            outputPost.write(jsonParam.toString().getBytes());
+            outputPost.flush();
+            outputPost.close();
+
+            int responseCode = urlConnection.getResponseCode();
+
+            inputStream = urlConnection.getInputStream();
+
+        } catch (IOException e) {
+            Log.d("HTTPCLIENT", e.getLocalizedMessage());
+        }catch(Exception e){
+            Log.e("log_tag", "Error in http connection "+e.toString());
+        }
+
+        return this.getResult(inputStream);
+
+    }
+
+
 
 
 
@@ -208,6 +258,8 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
             urlConnection.setRequestMethod("GET");
             urlConnection.connect();
             inputStream = urlConnection.getInputStream();
+
+            urlConnection.disconnect();
 
         } catch (IOException e) {
             Log.d("HTTPCLIENT", e.getLocalizedMessage());
@@ -236,11 +288,29 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
         return athleteList;
     }
 
+    public static ArrayList<Lesson> getLessonList(String lesson)
+    {
+        ArrayList<Lesson> list = new ArrayList<Lesson>();
+        //parse json data
+        try{
+            JSONArray jArray = new JSONArray(lesson);
+            for(int i=0;i<jArray.length();i++){
+                list.add(new Lesson( jArray.getJSONObject(i)));
+            }
+        }catch(JSONException e){
+            Log.e("log_tag", "Error parsing data " + e.toString());
+
+        }
+
+        return list;
+    }
+
+
+
     public void updateLocalAthleteData(final String result)
             throws IOException, XmlPullParserException, RemoteException,
             OperationApplicationException, ParseException {
 
-        final ContentResolver contentResolver = getContext().getContentResolver();
 
         List<Athlete> athleteList = getAthleteList(result);
 
@@ -277,6 +347,48 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
         }
 
     }
+
+
+    public void updateLocalLessonData(final String result)
+            throws IOException, XmlPullParserException, RemoteException,
+            OperationApplicationException, ParseException {
+
+        List<Lesson> lessonList = getLessonList(result);
+
+        // Get and insert the new weather information into the database
+        Vector<ContentValues> cVVector = new Vector<ContentValues>(lessonList.size());
+
+        for (Lesson p : lessonList){
+
+            ContentValues values = new ContentValues();
+            values.put(DataContract.LessonEntry.ID, p.getId());
+            values.put(DataContract.LessonEntry.BOXID, p.getBoxId());
+            values.put(DataContract.LessonEntry.DATE, p.getDate());
+            values.put(DataContract.LessonEntry.DURATION, p.getDuration());
+            values.put(DataContract.LessonEntry.MAXATTENDANCE, p.getMaxAttendance());
+            values.put(DataContract.LessonEntry.TYPE, p.getType());
+            cVVector.add(values);
+        }
+
+        if (cVVector.size() > 0) {
+            ContentValues[] cvArray = new ContentValues[cVVector.size()];
+            cVVector.toArray(cvArray);
+
+            int rowsDeleted = mContentResolver.delete(DataContract.LessonEntry.CONTENT_URI, "", null);
+            int rowsInserted = mContentResolver.bulkInsert(DataContract.LessonEntry.CONTENT_URI, cvArray);
+            Log.v(LOG_TAG, "deleted " + rowsDeleted + " rows of lesson data");
+            Log.v(LOG_TAG, "inserted " + rowsInserted + " rows of lesson data");
+
+            mContentResolver.notifyChange(
+                    DataContract.LessonEntry.CONTENT_URI, // URI where data was modified
+                    null,                           // No local observer
+                    false);                         // IMPORTANT: Do not sync to network
+
+        }
+
+    }
+
+
 
     /**
      * Helper method to schedule the sync adapter periodic execution

@@ -19,8 +19,6 @@ import android.content.ContentUris;
 import android.net.Uri;
 import android.provider.BaseColumns;
 
-import java.sql.Date;
-
 /**
  * Defines table and column names for the weather database.
  */
@@ -36,6 +34,7 @@ public class DataContract {
     public static final Uri BASE_CONTENT_URI = Uri.parse("content://" + CONTENT_AUTHORITY);
 
     public static final String PATH_ATHLETE = "athlete";
+    public static final String PATH_LESSON = "classes";
 
 
     public static final class AthleteEntry implements BaseColumns {
@@ -62,6 +61,36 @@ public class DataContract {
         }
 
         public static Uri buildPlayersUri() {
+            return CONTENT_URI.buildUpon().build();
+        }
+
+    }
+
+    public static final class LessonEntry implements BaseColumns {
+
+        public static final Uri CONTENT_URI =
+                BASE_CONTENT_URI.buildUpon().appendPath(PATH_LESSON).build();
+
+        public static final String CONTENT_TYPE =
+                "vnd.android.cursor.dir/" + CONTENT_AUTHORITY + "/" + PATH_LESSON;
+        public static final String CONTENT_ITEM_TYPE =
+                "vnd.android.cursor.item/" + CONTENT_AUTHORITY + "/" + PATH_LESSON;
+
+        public static final String ID = "id";
+        public static final String BOXID = "boxId";
+        public static final String DATE = "date";
+        public static final String DURATION = "duration";
+        public static final String TYPE = "type";
+        public static final String MAXATTENDANCE = "maxAttendance";
+
+        public static final String TABLE_NAME = "Lesson";
+
+
+        public static Uri buildLessonUri(long id) {
+            return ContentUris.withAppendedId(CONTENT_URI, id);
+        }
+
+        public static Uri buildLessonUri() {
             return CONTENT_URI.buildUpon().build();
         }
 

@@ -7,7 +7,6 @@ import android.content.UriMatcher;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
-import android.text.TextUtils;
 
 public class DataProvider extends ContentProvider {
 
@@ -18,6 +17,8 @@ public class DataProvider extends ContentProvider {
      private static final int ATHLETE = 100;
      private static final int ATHLETE_ID = 101;
 
+    private static final int LESSON = 200;
+
      private static UriMatcher buildUriMatcher() {
 
          final UriMatcher matcher = new UriMatcher(UriMatcher.NO_MATCH);
@@ -27,6 +28,9 @@ public class DataProvider extends ContentProvider {
          matcher.addURI(authority, DataContract.PATH_ATHLETE, ATHLETE);
          matcher.addURI(authority, DataContract.PATH_ATHLETE + "/#", ATHLETE_ID);
          //matcher.addURI(authority, DataContract.PATH_PLAYER + "/*/*", WEATHER_WITH_LOCATION_AND_DATE);
+
+         matcher.addURI(authority, DataContract.PATH_LESSON, LESSON);
+
 
          return matcher;
      }
@@ -74,6 +78,19 @@ public class DataProvider extends ContentProvider {
                  break;
              }
 
+             case LESSON:
+             {
+                 retCursor = mOpenHelper.getReadableDatabase().query(
+                         DataContract.LessonEntry.TABLE_NAME,
+                         projection,
+                         selection,
+                         selectionArgs,
+                         null,
+                         null,
+                         sortOrder
+                 );
+                 break;
+             }
 
 
              default:
@@ -94,6 +111,9 @@ public class DataProvider extends ContentProvider {
                  return DataContract.AthleteEntry.CONTENT_ITEM_TYPE;
              case ATHLETE:
                  return DataContract.AthleteEntry.CONTENT_TYPE;
+             case LESSON:
+                 return DataContract.LessonEntry.CONTENT_TYPE;
+
 
              default:
                  throw new UnsupportedOperationException("Unknown uri: " + uri);
@@ -131,6 +151,10 @@ public class DataProvider extends ContentProvider {
              case ATHLETE:
                  rowsDeleted = db.delete(
                          DataContract.AthleteEntry.TABLE_NAME, selection, selectionArgs);
+                 break;
+             case LESSON:
+                 rowsDeleted = db.delete(
+                         DataContract.LessonEntry.TABLE_NAME, selection, selectionArgs);
                  break;
              default:
                  throw new UnsupportedOperationException("Unknown uri: " + uri);
@@ -170,10 +194,11 @@ public class DataProvider extends ContentProvider {
      public int bulkInsert(Uri uri, ContentValues[] values) {
          final SQLiteDatabase db = mOpenHelper.getWritableDatabase();
          final int match = sUriMatcher.match(uri);
+         int returnCount = 0;
          switch (match) {
              case ATHLETE:
                  db.beginTransaction();
-                 int returnCount = 0;
+                 returnCount = 0;
                  try {
                      for (ContentValues value : values) {
                          long _id = db.insert(DataContract.AthleteEntry.TABLE_NAME, null, value);
@@ -188,7 +213,23 @@ public class DataProvider extends ContentProvider {
                  getContext().getContentResolver().notifyChange(uri, null);
 
                  return returnCount;
+             case LESSON:
+                 db.beginTransaction();
+                 returnCount = 0;
+                 try {
+                     for (ContentValues value : values) {
+                         long _id = db.insert(DataContract.LessonEntry.TABLE_NAME, null, value);
+                         if (_id != -1) {
+                             returnCount++;
+                         }
+                     }
+                     db.setTransactionSuccessful();
+                 } finally {
+                     db.endTransaction();
+                 }
+                 getContext().getContentResolver().notifyChange(uri, null);
 
+                 return returnCount;
 
              default:
                  return super.bulkInsert(uri, values);
