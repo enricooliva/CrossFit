@@ -9,4 +9,7 @@
     <string name="sync_account_type">com.enricooliva.crossfit.datasync</string>
     <string name="lesson">Lezione</string>
     <string name="title_activity_lesson">Lezioni</string>
+    <string name="title_registration">Registrazione</string>
+    <string name="Register">Iscriviti</string>
+    <string name="Cancel">Annulla</string>
 </resources>

@@ -176,7 +176,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                 BufferedReader reader = new BufferedReader(new InputStreamReader(is, "iso-8859-1"), 8);
                 StringBuilder sb = new StringBuilder();
                 String line = null;
-                while ((line = reader.readLine()) != null) {
+                while (reader.ready() && (line = reader.readLine()) != null) {
                     sb.append(line + "\n");
                 }
                 is.close();
@@ -396,7 +396,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
     public static void configurePeriodicSync(Context context, int syncInterval, int flexTime) {
         Account account = getSyncAccount(context);
         String authority = context.getString(R.string.content_authority);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+        if (Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT) {
             // we can enable inexact timers in our periodic sync
             SyncRequest request = new SyncRequest.Builder().
                     syncPeriodic(syncInterval, flexTime).

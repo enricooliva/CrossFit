@@ -12,7 +12,7 @@ import com.enricooliva.crossfit.sync.SyncAdapter;
 public class MainActivity extends AppCompatActivity {
 
 
-    public static final String AUTHORITY = "com.enricooliva.crossfit.app";
+    public static final String AUTHORITY = "com.enricooliva.crossfit.datasync.provider";
     // An account type, in the form of a domain name
     public static final String ACCOUNT_TYPE = "com.enricooliva.crossfit.account";
     // The account name
@@ -38,8 +38,7 @@ public class MainActivity extends AppCompatActivity {
                     .add(R.id.LessonFragmentPlaceholder, new LessonFragment())
                     .commit();
         }
-        //mAccount = CreateSyncAccount(this);
-        //SyncUtils.TriggerRefresh();
+
     }
 
 

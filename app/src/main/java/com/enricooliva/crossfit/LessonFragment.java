@@ -1,5 +1,6 @@
 package com.enricooliva.crossfit;
 
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -11,12 +12,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 
 import com.enricooliva.crossfit.data.DataContract;
 import com.enricooliva.crossfit.data.Lesson;
-
 
 
 public class LessonFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
@@ -46,10 +45,8 @@ public class LessonFragment extends Fragment implements LoaderManager.LoaderCall
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-
         mLessonAdapter = new LessonAdapter(getActivity(), null, 0);
         View rootView = inflater.inflate(R.layout.fragment_lesson, container, false);
-
 
         //athleteListView = getListView();
         // Get a reference to the ListView, and attach this adapter to it.
@@ -65,13 +62,20 @@ public class LessonFragment extends Fragment implements LoaderManager.LoaderCall
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
                 Cursor cursor = mLessonAdapter.getCursor();
                 if (cursor != null && cursor.moveToPosition(position)) {
-                    Lesson p = new Lesson(cursor);
-                    LinearLayout layout = (LinearLayout) view;
-                    //RatingBar ratingBar=(RatingBar) layout.findViewById(R.id.ratingBar1);
-                    //new Vote(p,ratingBar,getActivity()).showvote();
+                    Lesson lesson = new Lesson(cursor);
+                    // Creating an intent to open the activity LessonRegister
+                    Intent intent = new Intent(getContext(), LessonRegister.class);
+
+                    // Passing data as a parecelable object to LessonRegister
+                    intent.putExtra("lesson",lesson);
+
+                    // Opening the activity
+                    startActivity(intent);
+
                 }
             }
         });
+
 
         return rootView;
     }
@@ -112,7 +116,7 @@ public class LessonFragment extends Fragment implements LoaderManager.LoaderCall
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-        Log.v(LOG_TAG, "In onLoadFinished");
+        Log.v(LOG_TAG, "In onLoadFinished Lesson");
         mLessonAdapter.swapCursor(data);
     }
 

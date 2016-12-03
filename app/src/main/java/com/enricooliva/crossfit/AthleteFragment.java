@@ -2,7 +2,6 @@ package com.enricooliva.crossfit;
 
 import android.database.Cursor;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
@@ -124,7 +123,7 @@ public class AthleteFragment extends Fragment implements LoaderManager.LoaderCal
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-        Log.v(LOG_TAG, "In onLoadFinished");
+        Log.v(LOG_TAG, "In onLoadFinished Athlete");
         mAthleteAdapter.swapCursor(data);
     }
 

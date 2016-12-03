@@ -2,11 +2,8 @@ package com.enricooliva.crossfit.data;
 
 import android.database.Cursor;
 
-
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.util.Date;
 
 
 public class Athlete {
@@ -25,6 +22,8 @@ public class Athlete {
         lastName = cursor.getString(cursor.getColumnIndex(DataContract.AthleteEntry.COLUMN_lastName));
         dateOfBirth = cursor.getString(cursor.getColumnIndex(DataContract.AthleteEntry.COLUMN_dateOfBirth));
         sex = cursor.getString(cursor.getColumnIndex(DataContract.AthleteEntry.COLUMN_sex));
+        email = cursor.getString(cursor.getColumnIndex(DataContract.AthleteEntry.COLUMN_email));
+
 
     }
 

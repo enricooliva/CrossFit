@@ -18,10 +18,8 @@ package com.enricooliva.crossfit.sync;
 
 import android.accounts.Account;
 import android.accounts.AccountManager;
-import android.annotation.TargetApi;
 import android.content.ContentResolver;
 import android.content.Context;
-import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 
@@ -47,7 +45,7 @@ public class SyncUtils {
      *
      * @param context Context
      */
-    @TargetApi(Build.VERSION_CODES.FROYO)
+
     public static Account CreateSyncAccount(Context context) {
         boolean newAccount = false;
         boolean setupComplete = PreferenceManager

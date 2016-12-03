@@ -135,6 +135,14 @@ public class DataProvider extends ContentProvider {
                      throw new android.database.SQLException("Failed to insert row into " + uri);
                  break;
              }
+             case LESSON:{
+                 long _id = db.insert(DataContract.LessonEntry.TABLE_NAME, null, values);
+                 if ( _id > 0 )
+                     returnUri = DataContract.LessonEntry.buildLessonUri(_id);
+                 else
+                     throw new android.database.SQLException("Failed to insert row into " + uri);
+                 break;
+             }
              default:
                  throw new UnsupportedOperationException("Unknown uri: " + uri);
          }

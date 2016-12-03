@@ -23,7 +23,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class DataDbHelper extends SQLiteOpenHelper {
 
     // If you change the database schema, you must increment the database version.
-    private static final int DATABASE_VERSION = 3;
+    private static final int DATABASE_VERSION = 4;
 
     public static final String DATABASE_NAME = "crossfit.db";
 
@@ -63,7 +63,6 @@ public class DataDbHelper extends SQLiteOpenHelper {
 
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + DataContract.AthleteEntry.TABLE_NAME);
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + DataContract.LessonEntry.TABLE_NAME);
-
 
         onCreate(sqLiteDatabase);
 

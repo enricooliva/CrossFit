@@ -21,7 +21,6 @@
             android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -33,6 +32,14 @@
             <!-- <meta-data -->
             <!-- android:name="android.support.PARENT_ACTIVITY" -->
             <!-- android:value="com.enrico.calciottocandelara.CalciottoCandelaraStartPage" /> -->
+        </activity>
+        <activity
+            android:name=".LessonRegister"
+            android:label="@string/Register"
+            android:parentActivityName=".MainActivity">
+            <intent-filter>
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
         </activity>
 
         <provider
@@ -46,7 +53,8 @@
         -->
         <service
             android:name=".sync.SyncService"
-            android:exported="true">
+            android:exported="true"
+            android:process=":sync">
 
             <!--
             This intent filter is required. It allows the system to launch our sync service

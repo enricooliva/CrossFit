@@ -1,6 +1,8 @@
 package com.enricooliva.crossfit.data;
 
 import android.database.Cursor;
+import android.os.Parcel;
+import android.os.Parcelable;
 
 import com.enricooliva.crossfit.data.DataContract.LessonEntry;
 
@@ -8,7 +10,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 
-public class Lesson {
+public class Lesson implements Parcelable {
 
     /*{
         "id": "581fb1f7fbe45a3145e1e331",
@@ -60,39 +62,76 @@ public class Lesson {
 
     }
 
-        public String getId() {
-            return id;
-        }
-
-        public String getBoxId() {
-            return boxId;
-        }
-
-        public String getDate() {
-            return date;
-        }
-
-        public String getDuration() {
-            return duration;
-        }
-
-        public String getType() {
-            return type;
-        }
-
-        public String getMaxAttendance() {
-            return maxAttendance;
-        }
-
-        @Override
-        public String toString() {
-            return "Athlete{" +
-                    "id='" + id + '\'' +
-                    ", boxId='" + boxId + '\'' +
-                    ", date='" + date + '\'' +
-                    ", duration=" + duration +
-                    ", type='" + type + '\'' +
-                    ", maxAttendance='" + maxAttendance + '\'' +
-                    '}';
-        }
+    private Lesson(Parcel in) {
+        id = in.readString();
+        boxId = in.readString();
+        date = in.readString();
+        duration = in.readString();
+        type = in.readString();
+        maxAttendance = in.readString();
     }
+
+    public String getId() {
+        return id;
+    }
+
+    public String getBoxId() {
+        return boxId;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public String getDuration() {
+        return duration;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public String getMaxAttendance() {
+        return maxAttendance;
+    }
+
+    @Override
+    public String toString() {
+        return "Athlete{" +
+                "id='" + id + '\'' +
+                ", boxId='" + boxId + '\'' +
+                ", date='" + date + '\'' +
+                ", duration=" + duration +
+                ", type='" + type + '\'' +
+                ", maxAttendance='" + maxAttendance + '\'' +
+                '}';
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int i) {
+        dest.writeString(id);
+        dest.writeString(boxId);
+        dest.writeString(date);
+        dest.writeString(duration);
+        dest.writeString(type);
+        dest.writeString(maxAttendance);
+    }
+
+    public static final Parcelable.Creator<Lesson> CREATOR = new Parcelable.Creator<Lesson>() {
+
+        public Lesson createFromParcel(Parcel in) {
+            return new Lesson(in);
+        }
+
+        public Lesson[] newArray(int size) {
+            return new Lesson[size];
+        }
+    };
+
+
+}
