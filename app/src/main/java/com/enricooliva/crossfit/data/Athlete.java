@@ -5,6 +5,10 @@ import android.database.Cursor;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.Date;
+
+import static com.enricooliva.crossfit.data.DataContract.getDbDateString;
+
 
 public class Athlete {
 
@@ -36,7 +40,16 @@ public class Athlete {
             id = json_data.isNull("id") ? null : json_data.getString("id");
             firstName = json_data.isNull("firstName") ? null : json_data.getString("firstName");
             lastName = json_data.isNull("lastName") ? null : json_data.getString("lastName");
-            dateOfBirth = json_data.isNull("dateOfBirth") ? null : json_data.getString("dateOfBirth");
+
+            Object dObj = json_data.isNull("dateOfBirth") ? null : json_data.get("dateOfBirth");
+            if (dObj instanceof Integer){
+                dateOfBirth = getDbDateString(new Date((Integer) dObj * 1000L));
+            } else  if (dObj instanceof Long){
+                dateOfBirth = getDbDateString(new Date((Long) dObj * 1000L));
+            }else if (dObj instanceof String){
+                dateOfBirth = (String) dObj;
+            }
+
             sex = json_data.isNull("sex") ? null : json_data.getString("sex");
             email = json_data.isNull("email") ? null : json_data.getString("email");
 

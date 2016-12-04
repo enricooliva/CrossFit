@@ -9,8 +9,13 @@ import com.enricooliva.crossfit.data.DataContract.LessonEntry;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.Date;
+
+import static com.enricooliva.crossfit.data.DataContract.getDbDateString;
+
 
 public class Lesson implements Parcelable {
+
 
     /*{
         "id": "581fb1f7fbe45a3145e1e331",
@@ -49,7 +54,17 @@ public class Lesson implements Parcelable {
 
             id = json_data.isNull(LessonEntry.ID) ? null : json_data.getString(LessonEntry.ID);
             boxId = json_data.isNull(LessonEntry.BOXID) ? null : json_data.getString(LessonEntry.BOXID);
-            date = json_data.isNull(LessonEntry.DATE) ? null : json_data.getString(LessonEntry.DATE);
+            Object dObj = json_data.isNull(LessonEntry.DATE) ? null : json_data.get(LessonEntry.DATE);
+            if (dObj instanceof Integer){
+                //* 1000L
+                date = getDbDateString(new Date((Integer) dObj ));
+            }else  if (dObj instanceof Long){
+                //* 1000L
+                date = getDbDateString(new Date((Long) dObj ));
+            }else if (dObj instanceof String){
+                date = (String) dObj;
+            }
+
             duration = json_data.isNull(LessonEntry.DURATION) ? null : json_data.getString(LessonEntry.DURATION);
             type = json_data.isNull(LessonEntry.TYPE) ? null : json_data.getString(LessonEntry.TYPE);
             maxAttendance = json_data.isNull(LessonEntry.MAXATTENDANCE) ? null : json_data.getString(LessonEntry.MAXATTENDANCE);

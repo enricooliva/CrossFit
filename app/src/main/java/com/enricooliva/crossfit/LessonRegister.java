@@ -8,6 +8,8 @@ import android.widget.TextView;
 
 import com.enricooliva.crossfit.data.Lesson;
 
+import static com.enricooliva.crossfit.data.DataContract.getFriendlyDayString;
+
 public class LessonRegister extends AppCompatActivity {
 
     private TextView textDescription;
@@ -25,7 +27,7 @@ public class LessonRegister extends AppCompatActivity {
         textDescription = (TextView) findViewById(R.id.box_description);
 
         if (lesson!=null){
-            textDate.setText(String.format("Lezione del "+ lesson.getDate()));
+            textDate.setText(String.format("Lezione "+ getFriendlyDayString(getBaseContext(), lesson.getDate())));
             textDescription.setText(lesson.getType());
         }
 

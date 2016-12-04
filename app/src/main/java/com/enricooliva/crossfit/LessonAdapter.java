@@ -10,6 +10,8 @@ import android.widget.TextView;
 
 import com.enricooliva.crossfit.data.Lesson;
 
+import static com.enricooliva.crossfit.data.DataContract.getFriendlyDayString;
+
 /**
  * Created by Enrico on 06/04/2015.
  */
@@ -34,7 +36,7 @@ public class LessonAdapter extends CursorAdapter {
         item = new Lesson(cursor);
 
         TextView textName = (TextView) convertView.findViewById(R.id.data);
-        textName.setText(item.getDate());
+        textName.setText(getFriendlyDayString(context,item.getDate()));
 
         TextView textRole = (TextView) convertView.findViewById(R.id.type);
         textRole.setText(new StringBuilder()
