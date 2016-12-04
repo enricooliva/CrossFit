@@ -6,7 +6,7 @@
     <string name="title_activity_athlete">Atleti</string>
     <string name="home">CrossFit</string>
     <string name="content_authority">com.enricooliva.crossfit.app</string>
-    <string name="sync_account_type">com.enricooliva.crossfit.datasync</string>
+    <string name="sync_account_type">com.enricooliva.crossfit.account</string>
     <string name="lesson">Lezione</string>
     <string name="title_activity_lesson">Lezioni</string>
     <string name="title_registration">Registrazione</string>

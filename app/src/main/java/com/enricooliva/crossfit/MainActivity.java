@@ -8,6 +8,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.enricooliva.crossfit.sync.SyncAdapter;
+import com.enricooliva.crossfit.sync.SyncUtils;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -39,6 +40,8 @@ public class MainActivity extends AppCompatActivity {
                     .commit();
         }
 
+        mAccount = SyncUtils.CreateSyncAccount(this);
+        SyncUtils.TriggerRefresh();
     }
 
 

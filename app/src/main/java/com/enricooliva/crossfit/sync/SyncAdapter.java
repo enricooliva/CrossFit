@@ -42,10 +42,10 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.xmlpull.v1.XmlPullParserException;
 
+import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
@@ -166,20 +166,21 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
         Log.i(LOG_TAG, "Network synchronization complete");
     }
 
-    private String getResult(InputStream is)
+    private String getResult(BufferedInputStream bis)
     {
         //convert response to string
         String result = "";
-        if (is!=null) {
+        if (bis!=null) {
 
             try {
-                BufferedReader reader = new BufferedReader(new InputStreamReader(is, "iso-8859-1"), 8);
+
+                BufferedReader reader = new BufferedReader(new InputStreamReader(bis));
                 StringBuilder sb = new StringBuilder();
                 String line = null;
-                while (reader.ready() && (line = reader.readLine()) != null) {
+                while ((line = reader.readLine()) != null) {
                     sb.append(line + "\n");
                 }
-                is.close();
+                bis.close();
                 result = sb.toString();
                 reader.close();
             } catch (UnsupportedEncodingException e) {
@@ -189,9 +190,9 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                 Log.e("log_tag", "Error converting result " + e.toString());
                 e.printStackTrace();
             } finally {
-                if (is != null)
+                if (bis != null)
                     try {
-                        is.close();
+                        bis.close();
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -204,8 +205,8 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
     public String MadePostQuery(String builtUri)
     {
         HttpURLConnection urlConnection = null;
-        InputStream inputStream=null;
-
+        BufferedInputStream inputStream=null;
+        String result="";
         //http post
         try{
             URL url = new URL(builtUri.toString());
@@ -215,6 +216,8 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
             urlConnection = (HttpURLConnection) url.openConnection();
             urlConnection.setRequestMethod("POST");
             urlConnection.setRequestProperty("Content-Type", "application/json");//some header you want to add
+            urlConnection.setRequestProperty("Accept", "application/json");//some header you want to add
+
             //urlConnection.setRequestProperty("Authorization", "key=" + AppConfig.API_KEY);//some header you want to add
             urlConnection.setDoOutput(true);
 
@@ -228,7 +231,10 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
 
             int responseCode = urlConnection.getResponseCode();
 
-            inputStream = urlConnection.getInputStream();
+            inputStream = new BufferedInputStream(urlConnection.getInputStream());
+            result = this.getResult(inputStream);
+
+            urlConnection.disconnect();
 
         } catch (IOException e) {
             Log.d("HTTPCLIENT", e.getLocalizedMessage());
@@ -236,7 +242,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
             Log.e("log_tag", "Error in http connection "+e.toString());
         }
 
-        return this.getResult(inputStream);
+        return result;
 
     }
 
@@ -247,8 +253,8 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
     public String MadeGetQuery(String builtUri)
     {
         HttpURLConnection urlConnection = null;
-        InputStream inputStream=null;
-
+        BufferedInputStream inputStream=null;
+        String result = "";
         //http post
         try{
             URL url = new URL(builtUri.toString());
@@ -256,8 +262,13 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
             // Create the request to OpenWeatherMap, and open the connection
             urlConnection = (HttpURLConnection) url.openConnection();
             urlConnection.setRequestMethod("GET");
+            //urlConnection.setRequestProperty("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8");//some header you want to add
+            //urlConnection.setRequestProperty("Content-Type","application/json;charset=UTF-8");
+            //urlConnection.setRequestProperty("User-Agent","Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.98 Safari/537.36");
             urlConnection.connect();
-            inputStream = urlConnection.getInputStream();
+            inputStream = new BufferedInputStream(urlConnection.getInputStream());
+
+            result = this.getResult(inputStream);
 
             urlConnection.disconnect();
 
@@ -267,7 +278,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
             Log.e("log_tag", "Error in http connection "+e.toString());
         }
 
-        return this.getResult(inputStream);
+        return result;
 
     }
 
@@ -356,7 +367,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
         List<Lesson> lessonList = getLessonList(result);
 
         // Get and insert the new weather information into the database
-        Vector<ContentValues> cVVector = new Vector<ContentValues>(lessonList.size());
+            Vector<ContentValues> cVVector = new Vector<ContentValues>(lessonList.size());
 
         for (Lesson p : lessonList){
 

@@ -18,8 +18,10 @@ package com.enricooliva.crossfit.sync;
 
 import android.accounts.Account;
 import android.accounts.AccountManager;
+import android.annotation.TargetApi;
 import android.content.ContentResolver;
 import android.content.Context;
+import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 
@@ -36,16 +38,16 @@ public class SyncUtils {
 
     // Value below must match the account type specified in res/xml/syncadapter.xml
     // Content provider authority
-    public static final String AUTHORITY = "com.enricooliva.crossfit.datasync.provider";
+
     // Account type
-    public static final String ACCOUNT_TYPE = "com.enricooliva.crossfit.datasync";
+    public static final String ACCOUNT_TYPE = "com.enricooliva.crossfit.account";
 
     /**
      * Create an entry for this application in the system account list, if it isn't already there.
      *
      * @param context Context
      */
-
+    @TargetApi(Build.VERSION_CODES.FROYO)
     public static Account CreateSyncAccount(Context context) {
         boolean newAccount = false;
         boolean setupComplete = PreferenceManager
